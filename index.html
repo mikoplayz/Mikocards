@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Miko Cards</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #0b1220;
+      color: #e5e7eb;
+    }
+    header {
+      padding: 24px;
+      text-align: center;
+      background: linear-gradient(90deg, #7c3aed, #2563eb);
+    }
+    header h1 { margin: 0; font-size: 2.3rem; }
+    header p { margin: 6px 0 0; }
+
+    .container {
+      max-width: 1100px;
+      margin: auto;
+      padding: 30px;
+    }
+
+    .categories {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+
+    .cat-btn {
+      padding: 10px 16px;
+      border-radius: 20px;
+      background: #1f2933;
+      color: white;
+      cursor: pointer;
+      border: 1px solid #374151;
+    }
+
+    .cat-btn.active {
+      background: #2563eb;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+    }
+
+    .card {
+      background: #111827;
+      border-radius: 14px;
+      padding: 15px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+
+    .card:hover { transform: translateY(-6px); }
+
+    .card img {
+      width: 100%;
+      border-radius: 10px;
+    }
+
+    .price { color: #22c55e; font-weight: bold; }
+
+    footer {
+      margin-top: 40px;
+      padding: 20px;
+      text-align: center;
+      background: #020617;
+      font-size: 0.9rem;
+    }
+
+    .btn {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 10px 16px;
+      background: #2563eb;
+      color: white;
+      border-radius: 8px;
+      text-decoration: none;
+    }
+
+    .product {
+      max-width: 800px;
+      margin: auto;
+      padding: 30px;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>🃏 Miko Cards</h1>
+  <p>Pokémon TCG • Football Cards • YK Products</p>
+</header>
+
+<div class="container" id="shop">
+  <h2>Shop</h2>
+
+  <div class="categories">
+    <div class="cat-btn active" onclick="filterCategory('all', this)">All</div>
+    <div class="cat-btn" onclick="filterCategory('pokemon', this)">Pokémon</div>
+    <div class="cat-btn" onclick="filterCategory('football', this)">Football</div>
+    <div class="cat-btn" onclick="filterCategory('yk', this)">YK Products</div>
+  </div>
+
+  <div class="cards" id="cardGrid"></div>
+</div>
+
+<div class="product" id="product">
+  <h2 id="pTitle"></h2>
+  <img id="pImg" style="width:100%;border-radius:12px" />
+  <p id="pDesc"></p>
+  <p class="price" id="pPrice"></p>
+  <a class="btn" href="https://instagram.com/Mikoplayz12" target="_blank">DM ON INSTAGRAM TO BUY</a>
+  <br><br>
+  <a class="btn" href="#" onclick="goBack()">⬅ Back to Shop</a>
+</div>
+
+<footer>
+  <p>DM to buy: <a href="https://instagram.com/Mikoplayz12" target="_blank" style="color:#38bdf8">@Mikoplayz12</a></p>
+  <p>© 2026 Miko Cards</p>
+</footer>
+
+<script>
+  const products = [];
+
+  function renderProducts(category = 'all') {
+    const grid = document.getElementById('cardGrid');
+    grid.innerHTML = '';
+    products.filter(p => category === 'all' || p.category === category)
+      .forEach(p => {
+        const div = document.createElement('div');
+        div.className = 'card';
+        div.onclick = () => openProduct(p);
+        div.innerHTML = `
+          <img src="${p.img}">
+          <h3>${p.title}</h3>
+          <p class="price">${p.price}</p>
+        `;
+        grid.appendChild(div);
+      });
+  }
+
+  function filterCategory(cat, el) {
+    document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+    el.classList.add('active');
+    renderProducts(cat);
+  }
+
+  function openProduct(p) {
+    document.getElementById('shop').style.display = 'none';
+    document.getElementById('product').style.display = 'block';
+    document.getElementById('pTitle').innerText = p.title;
+    document.getElementById('pImg').src = p.img;
+    document.getElementById('pDesc').innerText = p.desc;
+    document.getElementById('pPrice').innerText = p.price;
+  }
+
+  function goBack() {
+    document.getElementById('product').style.display = 'none';
+    document.getElementById('shop').style.display = 'block';
+  }
+
+  renderProducts();
+</script>
+
+</body>
+</html>
